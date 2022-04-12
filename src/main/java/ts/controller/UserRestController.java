@@ -1,7 +1,10 @@
 package ts.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ts.repositories.UserClassRepository;
 import ts.userData.UserClass;
+
+import java.util.Optional;
 
 /**
  * Create	POST
@@ -13,6 +16,11 @@ import ts.userData.UserClass;
 @RestController
 public class UserRestController {
 
+    private final UserClassRepository repository;
+
+    public UserRestController(UserClassRepository repository) {
+        this.repository = repository;
+    }
 
     @PostMapping("/employees")
     UserClass createEmployee(@RequestBody UserClass newEmployee) {
@@ -21,7 +29,8 @@ public class UserRestController {
 
     @GetMapping("/employees")
     UserClass readEmployee(@RequestParam long id) {
-        return new UserClass();
+        Optional<UserClass> user =repository.findById(id);
+        return user.get();
     }
 
     @PutMapping("/employees")
